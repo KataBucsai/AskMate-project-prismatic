@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Questions</title>
+
+</head>
+
+<body>
+
+    <h1>List of questions</h1>
+
+    <form action="/question/new" method="post">
+        <input type="submit" value="Add new Question" id="add" name="add_new_question">
+    </form>
+
+    <br>
+
+        <table border=1 >
+            <tr>
+                    <th>ID</th>
+                    <th>Submission time</th>
+                    <th>View number</th>
+                    <th>Vote number</th>
+                    <th>Title</th>
+                    <th>Message</th>
+                    <th>Image</th>
+            </tr>          
+                {% for row in question_list %}
+                    <tr>   
+                        {% for cell in row %}
+                            <td>{{ cell }}</td>     
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+        </table>
+
+</body>
+
+</html>
