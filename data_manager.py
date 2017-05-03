@@ -19,7 +19,8 @@ def get_table_from_file(file_name, indices):
 #
 # @file_name: string
 # @table: list of lists of strings
-def write_table_to_file(file_name, table):
+def write_table_to_file(file_name, table, indices):
+    table = base64_coder(table, indices)
     with open(file_name, "w") as file:
         for record in table:
             row = ','.join(record)
@@ -29,14 +30,14 @@ def write_table_to_file(file_name, table):
 def base64_decoder(table, indices):
     for row in table:
         for i in indices:
-            row[i] = base64.b64decode(row[i]).decode("utf-8")
+            row[i] = str(base64.b64decode(row[i]).decode("utf-8"))
     return table
 
 
 def base64_coder(table, indices):
     for row in table:
         for i in indices:
-            row[i] = base64.b64encode(bytearray(row[i].encode))
+            row[i] = base64.b64encode(bytes(row[i],"utf-8")).decode("utf-8")  # str(base64.encodebytes(bytearray(row[i].encode()))) 
     return table
 
 
@@ -46,7 +47,8 @@ def table_sort(table, sort_key_number, rev_boolean):
 
 
 def get_time_stamp():
-    return int(time.time())
+    print(str(int(time.time()))) 
+    return str(int(time.time()))
 
 
 def get_timeform_from_stamp(table):
@@ -55,5 +57,23 @@ def get_timeform_from_stamp(table):
     return table
 
 
+def get_timeform_to_stamp(table):
+    for row in table:
+        row[1] = str(int(datetime.datetime.strptime(row[1], '%Y-%m-%d %H:%M:%S').strftime("%s")))
+    return table
+
+
+def add_item_to_table(table, request):
+    max_id = 0
+    if len(table) > 0:
+        max_id = max(int(i[0]) for i in table)
+    table.append([str(max_id+1),
+                 get_time_stamp(),
+                 '0',
+                 '0',
+                 request['new_question_title'],
+                 request['new_question_message'],
+                 ''])
+    return table
 
 

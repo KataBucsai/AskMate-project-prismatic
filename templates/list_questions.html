@@ -12,7 +12,7 @@
 
     <h1>List of questions</h1>
 
-    <form action="/question/new" method="post">
+    <form action="/question/new">
         <input type="submit" value="Add new Question" id="add" name="add_new_question">
     </form>
 
@@ -29,9 +29,10 @@
                     <th>Image</th>
             </tr>          
                 {% for row in question_list %}
-                    <tr>   
-                        {% for cell in row %}
-                            <td>{{ cell }}</td>     
+                    <tr>
+                        <td> <a href='/question/{{ row[0] }}'>{{ row[0] }}</td>   
+                        {% for i in range(1, row|length) %}
+                            <td>{{ row[i] }}</td>     
                         {% endfor %}
                     </tr>
                 {% endfor %}
