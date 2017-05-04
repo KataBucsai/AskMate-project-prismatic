@@ -37,7 +37,7 @@ def new_question():
 
 
 @app.route('/question/<id>')
-def display_question(id, not_view_count=False):
+def display_question(id, count_view=True):
     # view counter += 1
     question_file_name = current_file_path + "/data/question.csv"
     question_list = data_manager.get_table_from_file(question_file_name, (4, 5, 6))
@@ -45,7 +45,7 @@ def display_question(id, not_view_count=False):
         if row[0] == id:
             title = row[4]
             message = row[5]
-            if not_view_count:
+            if count_view:
                 row[2] = str(int(row[2])+1)  
             question_list = data_manager.get_timeform_to_stamp(question_list)
             data_manager.write_table_to_file(question_file_name, question_list, (4, 5, 6))
@@ -147,7 +147,7 @@ def vote_answer_up():
             break
     answer_list_csv_format = data_manager.get_timeform_to_stamp(answer_list)
     data_manager.write_table_to_file(file_name, answer_list_csv_format, (4, 5))
-    return display_question(question_id, not_view_count=True)
+    return display_question(question_id, count_view=False)
 
 
 @app.route('/vote_answer_down')
@@ -161,7 +161,7 @@ def vote_answer_down():
             break
     answer_list_csv_format = data_manager.get_timeform_to_stamp(answer_list)
     data_manager.write_table_to_file(file_name, answer_list_csv_format, (4, 5))
-    return display_question(question_id, not_view_count=True)
+    return display_question(question_id, count_view=False)
 
 
 if __name__ == '__main__':
