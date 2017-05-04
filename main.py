@@ -53,5 +53,20 @@ def display_question(id):
     return render_template('display_question.html', id=id, title=title, message=message, list_answers=list_answers)
 
 
+@app.route('/question/<question_id>/new-answer')
+def new_answer(question_id):
+    return render_template('new_answer.html', question_id=question_id)
+
+
+@app.route('/create_new_answer', methods=['POST'])
+def add_new_answer():
+    file_name = current_file_path + "/data/answer.csv"
+    answer_list = data_manager.get_table_from_file(file_name, (4, 5))
+    answer_list_csv_format = data_manager.get_timeform_to_stamp(answer_list)
+    answer_list_csv_format = data_manager.add_item_to_answer_table(answer_list_csv_format, request.form)
+    data_manager.write_table_to_file(file_name, answer_list_csv_format, (4, 5))
+    return redirect('/question/' + request.form["question_id"])
+
+
 if __name__ == '__main__':
     app.run(debug=True)
