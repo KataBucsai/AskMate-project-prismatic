@@ -37,7 +37,7 @@ def new_question():
 
 
 @app.route('/question/<id>')
-def display_question(id):
+def display_question(id, not_view_count=False):
     # view counter += 1
     question_file_name = current_file_path + "/data/question.csv"
     question_list = data_manager.get_table_from_file(question_file_name, (4, 5, 6))
@@ -45,7 +45,8 @@ def display_question(id):
         if row[0] == id:
             title = row[4]
             message = row[5]
-            row[2] = str(int(row[2])+1)
+            if not_view_count:
+                row[2] = str(int(row[2])+1)  
             question_list = data_manager.get_timeform_to_stamp(question_list)
             data_manager.write_table_to_file(question_file_name, question_list, (4, 5, 6))
             break
@@ -111,7 +112,6 @@ def add_image(id):
 
 @app.route('/vote_question_up')
 def vote_question_up():
-    print(request.args.get('id'))
     file_name = current_file_path + "/data/question.csv"
     question_list = data_manager.get_table_from_file(file_name, (4, 5, 6))
     for row in question_list:
@@ -121,6 +121,47 @@ def vote_question_up():
     question_list_csv_format = data_manager.get_timeform_to_stamp(question_list)
     data_manager.write_table_to_file(file_name, question_list_csv_format, (4, 5, 6))
     return redirect('/')
+
+
+@app.route('/vote_question_down')
+def vote_question_down():
+    file_name = current_file_path + "/data/question.csv"
+    question_list = data_manager.get_table_from_file(file_name, (4, 5, 6))
+    for row in question_list:
+        if row[0] == request.args.get('id'):
+            row[3] = str(int(row[3]) - 1)
+            break
+    question_list_csv_format = data_manager.get_timeform_to_stamp(question_list)
+    data_manager.write_table_to_file(file_name, question_list_csv_format, (4, 5, 6))
+    return redirect('/')
+
+
+@app.route('/vote_answer_up')
+def vote_answer_up():
+    file_name = current_file_path + "/data/answer.csv"
+    answer_list = data_manager.get_table_from_file(file_name, (4, 5))
+    for row in answer_list:
+        if row[0] == request.args.get('id'):
+            row[2] = str(int(row[2]) + 1)
+            question_id = row[3]
+            break
+    answer_list_csv_format = data_manager.get_timeform_to_stamp(answer_list)
+    data_manager.write_table_to_file(file_name, answer_list_csv_format, (4, 5))
+    return display_question(question_id, not_view_count=True)
+
+
+@app.route('/vote_answer_down')
+def vote_answer_down():
+    file_name = current_file_path + "/data/answer.csv"
+    answer_list = data_manager.get_table_from_file(file_name, (4, 5))
+    for row in answer_list:
+        if row[0] == request.args.get('id'):
+            row[2] = str(int(row[2]) - 1)
+            question_id = row[3]
+            break
+    answer_list_csv_format = data_manager.get_timeform_to_stamp(answer_list)
+    data_manager.write_table_to_file(file_name, answer_list_csv_format, (4, 5))
+    return display_question(question_id, not_view_count=True)
 
 
 if __name__ == '__main__':
