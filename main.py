@@ -109,5 +109,19 @@ def add_image(id):
     return render_template('file_upload.html')
 
 
+@app.route('/vote_question_up')
+def vote_question_up():
+    print(request.args.get('id'))
+    file_name = current_file_path + "/data/question.csv"
+    question_list = data_manager.get_table_from_file(file_name, (4, 5, 6))
+    for row in question_list:
+        if row[0] == request.args.get('id'):
+            row[3] = str(int(row[3]) + 1)
+            break
+    question_list_csv_format = data_manager.get_timeform_to_stamp(question_list)
+    data_manager.write_table_to_file(file_name, question_list_csv_format, (4, 5, 6))
+    return redirect('/')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
