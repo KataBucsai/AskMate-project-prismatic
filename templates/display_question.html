@@ -38,6 +38,11 @@
             <p>
                 Answer date: {{ row[1] }}
             </p>
+            {% if row[5] == '' %}
+                <td><a href='/add_answer_image/{{row[0]}}'>add image</a></td>
+            {% else %}
+                <td><a href='/static/uploads/img/{{row[5]}}'><img src='/static/uploads/img/{{row[5]}}' width = 40px></a>
+            {% endif %}
             <hr>
         {% endfor %}
         <!--
