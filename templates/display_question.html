@@ -19,6 +19,9 @@
         <input type="submit" value="Add new Answer" id="add_new_answer" name="add_new_answer">
         <input type="submit" value="Back to questions" formaction="/">
     </form>
+    <form action="\delete\{{ id }}" method="post">
+        <input type="submit" value="Delete question">
+    </form>
 
     <br>
         {% if list_answers|length == 0%}

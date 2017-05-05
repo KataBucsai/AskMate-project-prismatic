@@ -90,3 +90,12 @@ def add_item_to_answer_table(table, request):
     return table
 
 
+def delete_item_from_table(list_table, question_id):
+    for row_id, row_value in enumerate(list_table):
+        if row_value[0] == question_id:
+            del(list_table[row_id])
+            break
+    return list_table
+
+
+
