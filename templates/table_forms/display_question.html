@@ -11,8 +11,11 @@
 <body>
 
     <h1>Question id: {{ id }}</h1>
+    <h2>
+        Title: {{ title }}
+    </h2>
     <h3>
-        {{ message }}
+        Message: {{ message }}
     </h3>
 
     <form action="/question/{{ id }}/new-answer">
@@ -21,26 +24,7 @@
     </form>
 
     <br>
-        {% if list_answers|length == 0%}
-            <p>There are no answers yet</p>
-        {% else %}
-            <p>Answers:</p>
-        {% endif %}
-        {% set count = [0] %}
-        {% for row in list_answers %}
-            {%if count.append(count.pop() + 1) %}{% endif %}
-            <p>{{ count[0] }}. {{ row[4]}}</p>
-            <p>Votes: 
-                <a href="/vote_answer_up?id={{ row[0] }}"><img src="/static/thumbs_up.png" id="{{ row[0] }}" alt="Vote up" width="20"></a>
-                {{ row[2] }}
-                <a href="/vote_answer_down?id={{ row[0] }}"><img src="/static/thumbs_down.png" id="{{ row[0] }}" alt="Vote down" width="20"></a>
-            </p>
-            <p>
-                Answer date: {{ row[1] }}
-            </p>
-            <hr>
-        {% endfor %}
-        <!--
+
         <table border=1 >
             <tr>
                 <th>ID</th>
@@ -63,7 +47,7 @@
                 </tr>
             {% endfor %}     
         </table>
-        -->
+
 </body>
 
 </html>
